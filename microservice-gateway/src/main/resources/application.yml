@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - http://localhost:3000
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+      routes:
+        - id: microservice-users
+          uri: lb://microservice-users
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=2
