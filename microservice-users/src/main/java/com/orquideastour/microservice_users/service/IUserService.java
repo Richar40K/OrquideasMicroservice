@@ -16,4 +16,5 @@ public interface IUserService
           void deleteById(Long id);
           Optional<User> findByUsername(String username);
           Long countUsers();
+          Long countUsersActive();
 }

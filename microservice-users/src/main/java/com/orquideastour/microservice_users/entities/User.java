@@ -24,6 +24,7 @@ public class User
     private String name;
     private String secondName;
     private String lastName;
+    @Column(unique = true)
     private Long codigo;
 
     @Email
@@ -32,16 +33,16 @@ public class User
     private String cellPhone;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Position puesto;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Department departamento;
     private Double salario;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private State estado;
 
     @Column(unique = true)
@@ -72,7 +73,7 @@ public class User
     }
 
 
-    private String generateCodigo(long numero) {
+    public String generateCodigo(long numero) {
         return String.format("COL-%03d", numero);
     }
 }
