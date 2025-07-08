@@ -33,3 +33,10 @@ spring:
                 - Path=/api/users/**
               filters:
                 - StripPrefix=2
+
+            - id: microservice-bus
+              uri: lb://microservice-bus
+              predicates:
+                - Path=/api/bus/**
+              filters:
+                - StripPrefix=2
