@@ -22,6 +22,7 @@
     <module>microservice-gateway</module>
     <module>eureka-server</module>
     <module>config-server</module>
+    <module>microservice-oauth</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

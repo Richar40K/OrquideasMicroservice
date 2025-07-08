@@ -25,7 +25,7 @@ public class User
     private String secondName;
     private String lastName;
     @Column(unique = true)
-    private Long codigo;
+    private String codigo;
 
     @Email
     @NotBlank
@@ -46,7 +46,7 @@ public class User
     private State estado;
 
     @Column(unique = true)
-    private String usuario;
+    private String username;
     @NotBlank
     private String password;
     @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})

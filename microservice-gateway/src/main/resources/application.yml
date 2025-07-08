@@ -1,24 +1,35 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9100
+
   cloud:
     gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins:
-              - http://localhost:3000
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders:
-              - "*"
-            allowCredentials: true
-      routes:
-        - id: microservice-users
-          uri: lb://microservice-users
-          predicates:
-            - Path=/api/users/**
-          filters:
-            - StripPrefix=2
+      server:
+        webflux:
+          # CORS global
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowed-origins:
+                  - http://localhost:3000
+                allowed-methods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowed-headers:
+                  - "*"
+                allow-credentials: true
+
+          # Rutas del gateway
+          routes:
+            - id: microservice-users
+              uri: lb://microservice-users
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - StripPrefix=2

@@ -16,6 +16,20 @@ public class UserController
 {
     @Autowired
     private IUserService userService;
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalUsersCount() {
+        return ResponseEntity.ok(userService.countUsers());
+    }
+    @GetMapping("/count/active")
+    public ResponseEntity<Long> countActive() {
+        return ResponseEntity.ok(userService.countUsersActive());
+    }
+    @GetMapping("/salary/total")
+    public ResponseEntity<Map<String, Double>> totalSalary() {
+        Double sum = userService.getTotalSalario();
+        return ResponseEntity.ok(Collections.singletonMap("total", sum));
+    }
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.findAll());
@@ -59,14 +73,6 @@ public class UserController
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
-    @GetMapping("/count")
-    public ResponseEntity<Long> getTotalUsersCount() {
-        return ResponseEntity.ok(userService.countUsers());
-    }
-    @GetMapping("/count/active")
-    public ResponseEntity<Long> countActive() {
-        return ResponseEntity.ok(userService.countUsersActive());
     }
 
 }

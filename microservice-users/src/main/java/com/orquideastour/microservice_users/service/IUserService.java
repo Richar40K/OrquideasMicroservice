@@ -17,4 +17,5 @@ public interface IUserService
           Optional<User> findByUsername(String username);
           Long countUsers();
           Long countUsersActive();
+          Double getTotalSalario();
 }

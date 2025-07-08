@@ -54,35 +54,35 @@ public class UserServiceImpl implements IUserService
         user.setRoles(getRoles(user));
         User persisted = userRepository.save(user);
         String codigo = persisted.generateCodigo(persisted.getId());
-        persisted.setCodigo(Long.valueOf(codigo));
+        persisted.setCodigo(codigo);
         return userRepository.save(persisted);
     }
 
     @Override
     @Transactional
     public Optional<User> update(User user, Long id) {
-        Optional<User> userOptional = this.findById(id);
-        return  userOptional.map( usdb -> {
-            usdb.setName(user.getName());
-            usdb.setSecondName(user.getSecondName());
-            usdb.setLastName(user.getLastName());
-            usdb.setEmail(user.getEmail());
-            usdb.setCellPhone(user.getCellPhone());
-            if (StringUtils.isNotBlank(user.getPassword())) {
-                usdb.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
-            usdb.setDepartamento(user.getDepartamento());
-            usdb.setSalario(user.getSalario());
-            usdb.setPuesto(user.getPuesto());
-            usdb.setEstado(user.getEstado());
-            if(user.getAdmin()!=null)
-                usdb.setAdmin(user.getAdmin());
-            if(user.isEnabled()==null)
-                usdb.setEnabled(true);
-            else
-                usdb.setEnabled(user.isEnabled());
-            return Optional.of(userRepository.save(usdb));
-        }).orElseGet(()->Optional.empty());
+        return userRepository.findById(id)
+                .map(usDb -> {
+                    usDb.setName(user.getName());
+                    usDb.setSecondName(user.getSecondName());
+                    usDb.setLastName(user.getLastName());
+                    usDb.setEmail(user.getEmail());
+                    usDb.setCellPhone(user.getCellPhone());
+                    if (StringUtils.isNotBlank(user.getPassword())) {
+                        usDb.setPassword(passwordEncoder.encode(user.getPassword()));
+                    }
+                    usDb.setDepartamento(user.getDepartamento());
+                    usDb.setSalario(user.getSalario());
+                    usDb.setPuesto(user.getPuesto());
+                    usDb.setEstado(user.getEstado());
+
+                    if (user.getAdmin() != null) {
+                        usDb.setAdmin(user.getAdmin());
+                    }
+                    usDb.setEnabled(user.isEnabled() == null ? true : user.isEnabled());
+                    usDb.setRoles(getRoles(usDb));
+                    return userRepository.save(usDb);
+                });
     }
 
     @Override
@@ -98,15 +98,21 @@ public class UserServiceImpl implements IUserService
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Long countUsers() {
         return userRepository.count();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Long countUsersActive() {
         return userRepository.countByEstado(State.ACTIVO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Double getTotalSalario() {
+        return userRepository.getTotalSalario();
     }
 
     private List<Role> getRoles(User  user) {
