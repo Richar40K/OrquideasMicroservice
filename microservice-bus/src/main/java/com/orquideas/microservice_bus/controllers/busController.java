@@ -18,7 +18,7 @@ public class busController
     public ResponseEntity<List<Bus>> getAllBus(){
         return ResponseEntity.ok(busService.findAll());
     }
-    @GetMapping("activo")
+    @GetMapping("/activo")
     public ResponseEntity<List<Bus>> getAllBusActive(){
         return ResponseEntity.ok(busService.findByState());
     }

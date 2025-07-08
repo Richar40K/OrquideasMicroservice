@@ -52,6 +52,6 @@ public class BusServiceImpl implements IBusService{
 
     @Override
     public List<Bus> findByState() {
-        return (List<Bus>) busRepository.findByState(State.ACTIVO);
+        return (List<Bus>) busRepository.findByEstado(State.ACTIVO);
     }
 }

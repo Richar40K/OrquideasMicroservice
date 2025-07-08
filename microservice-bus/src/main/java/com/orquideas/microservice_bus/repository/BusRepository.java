@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface BusRepository extends CrudRepository<Bus,Long>
 {
-    List<Bus> findByState(State estado);
+    List<Bus> findByEstado(State estado);
 }
