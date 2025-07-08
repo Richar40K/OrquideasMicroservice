@@ -2,6 +2,7 @@ package com.orquideastour.microservice_users.service;
 
 
 import com.orquideastour.microservice_users.entities.User;
+import com.orquideastour.microservice_users.enums.Position;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,6 @@ public interface IUserService
           Long countUsers();
           Long countUsersActive();
           Double getTotalSalario();
+          List<User> findByPuestoNotClient();
+          List<User> finByPuestoClient();
 }

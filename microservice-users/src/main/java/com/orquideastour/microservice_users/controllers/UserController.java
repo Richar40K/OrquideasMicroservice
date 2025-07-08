@@ -21,6 +21,7 @@ public class UserController
     public ResponseEntity<Long> getTotalUsersCount() {
         return ResponseEntity.ok(userService.countUsers());
     }
+
     @GetMapping("/count/active")
     public ResponseEntity<Long> countActive() {
         return ResponseEntity.ok(userService.countUsersActive());
@@ -30,11 +31,17 @@ public class UserController
         Double sum = userService.getTotalSalario();
         return ResponseEntity.ok(Collections.singletonMap("total", sum));
     }
-    @GetMapping
+
+    @GetMapping()
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.findAll());
     }
 
+    @GetMapping("/empleados")
+    public ResponseEntity<List<User>> getAllEmpleados(){ return ResponseEntity.ok(userService.findByPuestoNotClient());}
+
+    @GetMapping("/clientes")
+    public ResponseEntity<List<User>> getClients(){ return ResponseEntity.ok(userService.finByPuestoClient());}
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id){
         return userService.findById(id)

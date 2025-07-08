@@ -12,6 +12,7 @@
         <module name="eureka-server" />
         <module name="microservice-users" />
         <module name="microservice-oauth" />
+        <module name="microservice-bus" />
       </profile>
     </annotationProcessing>
   </component>
@@ -19,6 +20,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="config-server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="microservice-bus" options="-parameters" />
       <module name="microservice-gateway" options="-parameters" />
       <module name="microservice-oauth" options="-parameters" />
       <module name="microservice-users" options="-parameters" />

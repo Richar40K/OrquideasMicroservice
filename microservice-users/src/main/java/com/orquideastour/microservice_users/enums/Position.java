@@ -7,7 +7,8 @@ public enum Position
     SUPERVISOR_ALMACEN("Supervisor de Almacén"),
     CHOFER("Chofer"),
     ATENCION_CLIENTE("Atención al Cliente"),
-    ASISTENTE_ADMINISTRATIVO("Asistente Administrativo");
+    ASISTENTE_ADMINISTRATIVO("Asistente Administrativo"),
+    CLIENTE("Cliente");
 
     private final String displayName;
 

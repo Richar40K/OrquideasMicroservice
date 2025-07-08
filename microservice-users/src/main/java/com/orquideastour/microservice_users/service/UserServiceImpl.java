@@ -2,6 +2,7 @@ package com.orquideastour.microservice_users.service;
 
 import com.orquideastour.microservice_users.entities.Role;
 import com.orquideastour.microservice_users.entities.User;
+import com.orquideastour.microservice_users.enums.Position;
 import com.orquideastour.microservice_users.enums.State;
 import com.orquideastour.microservice_users.repositories.RoleRepository;
 import com.orquideastour.microservice_users.repositories.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService
@@ -57,7 +59,10 @@ public class UserServiceImpl implements IUserService
             user.setPassword(passwordEncoder.encode(user.getUsername()));
         else
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        if(user.getEstado() ==null)
+            user.setEstado(State.ACTIVO);
+        if(user.getPuesto()==null)
+            user.setPuesto(Position.CLIENTE);
         user.setEnabled(true);
         user.setRoles(getRoles(user));
         User persisted = userRepository.save(user);
@@ -121,6 +126,18 @@ public class UserServiceImpl implements IUserService
     @Transactional(readOnly = true)
     public Double getTotalSalario() {
         return userRepository.getTotalSalario();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> findByPuestoNotClient() {
+        return (List<User>) userRepository.findByPuestoNot(Position.CLIENTE);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> finByPuestoClient() {
+        return (List<User>) userRepository.findByPuesto(Position.CLIENTE);
     }
 
     private List<Role> getRoles(User  user) {
