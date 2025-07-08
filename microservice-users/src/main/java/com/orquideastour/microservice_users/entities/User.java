@@ -24,8 +24,15 @@ public class User
     private String name;
     private String secondName;
     private String lastName;
+    @Column(unique = true, nullable = false)
+    private String dni;
     @Column(unique = true)
     private String codigo;
+
+    private String direccion;
+
+    private String nameEmergency;
+    private String phoneEmergency;
 
     @Email
     @NotBlank
@@ -45,7 +52,7 @@ public class User
     @Column(nullable = true)
     private State estado;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = true)
     private String username;
     @NotBlank
     private String password;

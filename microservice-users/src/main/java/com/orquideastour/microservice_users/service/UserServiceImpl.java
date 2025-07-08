@@ -49,7 +49,15 @@ public class UserServiceImpl implements IUserService
     @Override
     @Transactional
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getUsername() == null || user.getUsername().isBlank()) {
+            String dni = user.getDni();
+            user.setUsername(dni);
+            user.setPassword(passwordEncoder.encode(dni));
+        } else if(user.getPassword()==null || user.getPassword().isBlank())
+            user.setPassword(passwordEncoder.encode(user.getUsername()));
+        else
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         user.setEnabled(true);
         user.setRoles(getRoles(user));
         User persisted = userRepository.save(user);
