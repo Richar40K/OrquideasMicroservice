@@ -40,3 +40,17 @@ spring:
                 - Path=/api/bus/**
               filters:
                 - StripPrefix=2
+
+            - id: microservice-travel
+              uri: lb://microservice-travel
+              predicates:
+                - Path=/api/rutas/**
+              filters:
+                - StripPrefix=1
+
+            - id: microservice-travel
+              uri: lb://microservice-travel
+              predicates:
+                - Path=/api/rutas/**
+              filters:
+                - StripPrefix=2

@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/bus").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/bus/activo").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/bus").permitAll()
+
                         .pathMatchers(HttpMethod.GET, "api/users/check-username").permitAll()
                         .anyExchange().authenticated()
                 )

@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="microservice-gateway" />
         <module name="config-server" />
+        <module name="microservice-travel" />
         <module name="eureka-server" />
         <module name="microservice-users" />
         <module name="microservice-oauth" />
@@ -23,6 +24,7 @@
       <module name="microservice-bus" options="-parameters" />
       <module name="microservice-gateway" options="-parameters" />
       <module name="microservice-oauth" options="-parameters" />
+      <module name="microservice-travel" options="-parameters" />
       <module name="microservice-users" options="-parameters" />
     </option>
   </component>
