@@ -51,6 +51,6 @@ spring:
             - id: microservice-travel
               uri: lb://microservice-travel
               predicates:
-                - Path=/api/rutas/**
+                - Path=/api/viajes/**
               filters:
                 - StripPrefix=2

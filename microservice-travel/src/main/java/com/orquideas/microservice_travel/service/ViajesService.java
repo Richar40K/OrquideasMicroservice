@@ -11,6 +11,7 @@ import com.orquideas.microservice_travel.repositories.ViajesRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,13 +38,14 @@ public class ViajesService implements IViajesService {
 
     // Simula los asientos ocupados (cuando tengas tu repo real, reemplaza esto)
     private List<Integer> obtenerAsientosOcupadosPorViaje(Long viajeId) {
-        // TODO: integrar con microservicio o repositorio real de boletos
+
         return new ArrayList<>();
     }
 
     // ----- METODOS -----
 
     @Override
+    @Transactional(readOnly = true)
     public List<ViajeRespuestaDTO> findAll() {
         List<Viajes> viajes = (List<Viajes>) viajesRepository.findAll();
         actualizarEstados(viajes);
@@ -51,6 +53,7 @@ public class ViajesService implements IViajesService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ViajeRespuestaDTO> listarViajesProgramados() {
         List<Viajes> viajes = viajesRepository.findByEstadoAndFechaSalida(State.PROGRAMADO, LocalDate.now());
         actualizarEstados(viajes);
@@ -61,11 +64,13 @@ public class ViajesService implements IViajesService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<ViajeRespuestaDTO> findById(Long id) {
         return viajesRepository.findById(id).map(this::toDto);
     }
 
     @Override
+    @Transactional
     public ViajeRespuestaDTO save(CrearViajeDTO dto) {
         // Validar existencia de Bus, User y Ruta
         BusDTO bus = busClient.getBusById(dto.getBusId());
@@ -89,6 +94,7 @@ public class ViajesService implements IViajesService {
     }
 
     @Override
+    @Transactional
     public Optional<ViajeRespuestaDTO> update(ActualizarViajeDTO dto, Long id) {
         Optional<Viajes> viajeOpt = viajesRepository.findById(id);
         return viajeOpt.map(v -> {
@@ -101,11 +107,13 @@ public class ViajesService implements IViajesService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         viajesRepository.deleteById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AsientoDTO> listarAsientosDeViaje(Long viajeId) {
         Viajes viaje = viajesRepository.findById(viajeId)
                 .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
@@ -120,7 +128,6 @@ public class ViajesService implements IViajesService {
         return resultado;
     }
 
-    // ---------- UTILIDAD PARA ACTUALIZAR ESTADOS ----------
 
     private void actualizarEstados(List<Viajes> viajes) {
         LocalDateTime ahora = LocalDateTime.now();
@@ -137,12 +144,10 @@ public class ViajesService implements IViajesService {
             } else if (!ahora.isBefore(llegada)) {
                 v.setEstado(State.COMPLETADO);
             }
-            // Puedes guardar el cambio en la BD si lo deseas (opcional)
-            // viajesRepository.save(v);
+
         }
     }
 
-    // ---------- MAPEADOR ENTIDAD → DTO DE RESPUESTA ----------
     private ViajeRespuestaDTO toDto(Viajes viaje) {
         UserDTO chofer = userClient.getUserById(viaje.getUserId());
         ViajeRespuestaDTO dto = new ViajeRespuestaDTO();

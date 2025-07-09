@@ -49,7 +49,11 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/bus").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/bus/activo").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/bus").permitAll()
-
+                        .pathMatchers(HttpMethod.GET, "/api/rutas").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/viajes").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/viajes/programados").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/viajes/{id}/asientos").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/viajes").permitAll()
                         .pathMatchers(HttpMethod.GET, "api/users/check-username").permitAll()
                         .anyExchange().authenticated()
                 )
