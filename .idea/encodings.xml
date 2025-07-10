@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/microservice-bus/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-oauth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-parcels/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-payment/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-travel/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-users/src/main/java" charset="UTF-8" />

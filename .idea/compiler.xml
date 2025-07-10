@@ -13,6 +13,7 @@
         <module name="microservice-travel" />
         <module name="eureka-server" />
         <module name="microservice-users" />
+        <module name="microservice-parcels" />
         <module name="microservice-oauth" />
         <module name="microservice-bus" />
       </profile>
@@ -25,6 +26,7 @@
       <module name="microservice-bus" options="-parameters" />
       <module name="microservice-gateway" options="-parameters" />
       <module name="microservice-oauth" options="-parameters" />
+      <module name="microservice-parcels" options="-parameters" />
       <module name="microservice-payment" options="-parameters" />
       <module name="microservice-travel" options="-parameters" />
       <module name="microservice-users" options="-parameters" />
