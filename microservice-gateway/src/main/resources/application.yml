@@ -54,3 +54,10 @@ spring:
                 - Path=/api/viajes/**
               filters:
                 - StripPrefix=2
+
+            - id: microservice-payment
+              uri: lb://microservice-payment
+              predicates:
+                - Path=/api/pagos/**
+              filters:
+                - StripPrefix=2

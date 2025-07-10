@@ -89,6 +89,7 @@ public class ViajesService implements IViajesService {
         viaje.setFechaLlegada(dto.getFechaLlegada());
         viaje.setHoraLLegada(dto.getHoraLLegada());
         viaje.setEstado(State.PROGRAMADO);
+        viaje.setPrecio(dto.getPrecio());
 
         return toDto(viajesRepository.save(viaje));
     }
@@ -102,6 +103,7 @@ public class ViajesService implements IViajesService {
             v.setHoraSalida(dto.getHoraSalida());
             v.setFechaLlegada(dto.getFechaLlegada());
             v.setHoraLLegada(dto.getHoraLLegada());
+            v.setPrecio(dto.getPrecio());
             return toDto(viajesRepository.save(v));
         });
     }
@@ -161,6 +163,7 @@ public class ViajesService implements IViajesService {
         dto.setBusId(viaje.getBusId());
         dto.setUserId(viaje.getUserId());
         dto.setEstado(viaje.getEstado());
+        dto.setPrecio(viaje.getPrecio());
         if (chofer != null) {
             dto.setNombreChofer(chofer.getName());
             dto.setApellidoChofer(chofer.getLastName());

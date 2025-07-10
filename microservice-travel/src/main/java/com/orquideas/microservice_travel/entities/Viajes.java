@@ -36,4 +36,6 @@ public class Viajes
     private State estado;
 
     private Long busId;
+
+    private Double precio;
 }

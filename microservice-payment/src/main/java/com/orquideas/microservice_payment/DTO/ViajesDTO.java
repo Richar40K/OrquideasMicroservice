@@ -1,4 +1,4 @@
-package com.orquideas.microservice_travel.DTO;
+package com.orquideas.microservice_payment.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,12 +6,15 @@ import lombok.Setter;
 import java.sql.Time;
 import java.time.LocalDate;
 
+
 @Getter
 @Setter
-public class ActualizarViajeDTO {
+public class ViajesDTO
+{
+    private Long id;
+    private RutasDTO ruta;
     private LocalDate fechaSalida;
     private Time horaSalida;
-    private LocalDate fechaLlegada;
-    private Time horaLLegada;
+    private Long busId;
     private Double precio;
 }

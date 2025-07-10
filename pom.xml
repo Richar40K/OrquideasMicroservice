@@ -25,6 +25,7 @@
     <module>microservice-oauth</module>
     <module>microservice-bus</module>
     <module>microservice-travel</module>
+    <module>microservice-payment</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

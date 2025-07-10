@@ -22,4 +22,5 @@ public class ViajeRespuestaDTO {
     private String nombreChofer;
     private String apellidoChofer;
     private State estado;
+    private Double precio;
 }

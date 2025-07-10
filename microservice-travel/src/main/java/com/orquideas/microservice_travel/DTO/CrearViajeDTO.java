@@ -16,4 +16,5 @@ public class CrearViajeDTO {
     private Time horaSalida;
     private LocalDate fechaLlegada;
     private Time horaLLegada;
+    private Double precio;
 }
