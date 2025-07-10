@@ -34,7 +34,7 @@ public class Pago
     @Enumerated(EnumType.STRING)
     private PagoEstado estado;
 
-    private String mpPreferenceId; // <--- ID string/UUID de preferencia
+    private String mpPreferenceId;
 
     private Long mpPaymentId;
 

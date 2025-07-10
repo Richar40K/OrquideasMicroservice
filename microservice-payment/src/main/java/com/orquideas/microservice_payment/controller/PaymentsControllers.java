@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -51,5 +52,10 @@ public class PaymentsControllers {
         Optional<PagoRespuestaDTO> editado = pagoService.editarPago(id, nuevosDetalles);
         return editado.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    @PostMapping
+    public ResponseEntity<String> recibirWebhook(@RequestBody Map<String, Object> payload) {
+        pagoService.procesarWebhookMercadoPago(payload);
+        return ResponseEntity.ok("OK");
     }
 }
