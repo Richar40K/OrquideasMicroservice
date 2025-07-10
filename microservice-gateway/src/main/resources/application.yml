@@ -63,7 +63,7 @@ spring:
                 - StripPrefix=2
 
             - id: microservice-parcels
-              uri: lb//microservice-parcels
+              uri: lb://microservice-parcels
               predicates:
                 - Path=/api/encomiendas/**
               filters:
