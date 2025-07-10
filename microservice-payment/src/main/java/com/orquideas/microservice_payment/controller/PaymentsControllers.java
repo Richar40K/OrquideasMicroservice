@@ -20,8 +20,6 @@ public class PaymentsControllers {
     @PostMapping("/viaje")
     public ResponseEntity<PagoRespuestaDTO> iniciarPagoViaje(@RequestBody CrearPagoViajeDTO dto) throws Exception {
 
-
-
         PagoRespuestaDTO respuesta = pagoService.iniciarPagoViaje(dto);
         return ResponseEntity.ok(respuesta);
     }

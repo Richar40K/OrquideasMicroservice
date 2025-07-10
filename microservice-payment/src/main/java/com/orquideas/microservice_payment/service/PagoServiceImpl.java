@@ -23,10 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class PagoServiceImpl implements IPagoService
@@ -110,9 +109,44 @@ public class PagoServiceImpl implements IPagoService
     @Transactional(readOnly = true)
     public List<PagoRespuestaDTO> findAll() {
         Iterable<Pago> iterable = pagoRepository.findAll();
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .map(p -> toDto(p, null))
-                .collect(Collectors.toList());
+        List<PagoRespuestaDTO> dtos = new ArrayList<>();
+        for (Pago pago : iterable) {
+            // Sincroniza estado con Mercado Pago solo si tiene mpPaymentId
+            if (pago.getMyPaymentId() != null) {
+                try {
+                    MercadoPagoConfig.setAccessToken(mpAccessToken);
+                    com.mercadopago.client.payment.PaymentClient client = new com.mercadopago.client.payment.PaymentClient();
+                    com.mercadopago.resources.payment.Payment payment = client.get(Long.valueOf(pago.getMyPaymentId()));
+
+                    String status = payment.getStatus(); // "approved", "rejected", etc.
+
+                    PagoEstado nuevoEstado;
+                    switch (status) {
+                        case "approved":
+                            nuevoEstado = PagoEstado.APROBADO;
+                            break;
+                        case "rejected":
+                            nuevoEstado = PagoEstado.RECHAZADO;
+                            break;
+                        case "in_process":
+                            nuevoEstado = PagoEstado.EN_PROCESO;
+                            break;
+                        default:
+                            nuevoEstado = PagoEstado.PENDIENTE;
+                            break;
+                    }
+
+                    if (!nuevoEstado.equals(pago.getEstado())) {
+                        pago.setEstado(nuevoEstado);
+                        pagoRepository.save(pago);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            dtos.add(toDto(pago, null));
+        }
+        return dtos;
     }
 
     @Override
