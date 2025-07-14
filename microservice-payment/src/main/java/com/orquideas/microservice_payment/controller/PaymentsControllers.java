@@ -55,6 +55,7 @@ public class PaymentsControllers {
     }
     @PostMapping
     public ResponseEntity<String> recibirWebhook(@RequestBody Map<String, Object> payload) {
+        System.out.println("Payload recibido de MercadoPago: " + payload);
         pagoService.procesarWebhookMercadoPago(payload);
         return ResponseEntity.ok("OK");
     }

@@ -5,5 +5,6 @@ public enum PagoEstado
     PENDIENTE,
     APROBADO,
     RECHAZADO,
-    EN_PROCESO;
+    EN_PROCESO,
+    CANCELADO
 }

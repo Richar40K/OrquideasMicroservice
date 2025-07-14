@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/encomiendas").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/encomiendas").permitAll()
                         .pathMatchers(HttpMethod.GET, "api/users/check-username").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/pagos").permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

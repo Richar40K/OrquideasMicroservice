@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,19 +67,22 @@ public class PagoServiceImpl implements IPagoService
         pago.setMonto(monto);
         pago.setEstado(PagoEstado.PENDIENTE);
         pago.setFecha(LocalDateTime.now());
-        pago.setDetalles(dto.getDetalles());
+        pago.setDetalles("Boleto para el asiento " + dto.getAsiento());
 
         // Mercado Pago: Crear preferencia
         MercadoPagoConfig.setAccessToken(mpAccessToken);
 
         PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
-                .title("Boleto de Viaje")
+                .title("Boleto de Viaje " + dto.getAsiento())
                 .quantity(1)
                 .unitPrice(BigDecimal.valueOf(monto))
                 .build();
 
         PreferenceRequest request = PreferenceRequest.builder()
                 .items(List.of(itemRequest))
+                .expires(true)
+                .expirationDateFrom(ZonedDateTime.now().toOffsetDateTime())
+                .expirationDateTo(ZonedDateTime.now().plusMinutes(10).toOffsetDateTime())
                 .build();
 
         PreferenceClient client = new PreferenceClient();
@@ -193,6 +197,8 @@ public class PagoServiceImpl implements IPagoService
                             case "approved": nuevoEstado = PagoEstado.APROBADO; break;
                             case "rejected": nuevoEstado = PagoEstado.RECHAZADO; break;
                             case "in_process": nuevoEstado = PagoEstado.EN_PROCESO; break;
+                            case "cancelled":
+                            case "expired": nuevoEstado = PagoEstado.CANCELADO; break;
                             default: nuevoEstado = PagoEstado.PENDIENTE; break;
                         }
                         pago.setEstado(nuevoEstado);
