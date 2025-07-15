@@ -68,3 +68,10 @@ spring:
                 - Path=/api/encomiendas/**
               filters:
                 - StripPrefix=2
+
+            - id: microservice-oauth
+              uri: lb://microservice-oauth
+              predicates:
+                - Path=/api/seguridad/**
+              filters:
+                - StripPrefix=2
