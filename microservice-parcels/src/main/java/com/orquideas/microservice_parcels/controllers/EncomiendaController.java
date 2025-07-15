@@ -38,6 +38,13 @@ public class EncomiendaController {
         return ResponseEntity.ok(encomeindaService.findAll());
     }
 
+
+    @GetMapping("/code/{codigo}")
+    public ResponseEntity<ResponseEncomiendaDTO> getEncomiendaByCodigo(@PathVariable String codigo) {
+        return encomeindaService.findByCodigo(codigo)
+                .map(ResponseEntity::ok) // Si existe, devuelve 200 OK con el DTO
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Si no existe, devuelve 404
+    }
     // Eliminar encomienda por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
