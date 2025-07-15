@@ -59,4 +59,10 @@ public class PaymentsControllers {
         pagoService.procesarWebhookMercadoPago(payload);
         return ResponseEntity.ok("OK");
     }
+    @GetMapping("/sincronizar")
+    public ResponseEntity<String> sincronizarPagos() {
+        pagoService.sincronizarEstadosPagos();
+        return ResponseEntity.ok("Pagos sincronizados");
+    }
+
 }

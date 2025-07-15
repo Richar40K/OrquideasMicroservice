@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST, "/api/encomiendas").permitAll()
                         .pathMatchers(HttpMethod.GET, "api/users/check-username").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/pagos").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/pagos/sincronizar").permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

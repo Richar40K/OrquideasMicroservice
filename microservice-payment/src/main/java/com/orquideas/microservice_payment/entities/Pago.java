@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "pagos")
 @Getter
 @Setter
-public class Pago
-{
+public class Pago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,24 +21,17 @@ public class Pago
     private PagoTipo tipo;
 
     private Long userId;
-
     private Long viajeId;
-
     private Integer asiento;
-
     private Long encomiendaId;
-
     private Double monto;
 
     @Enumerated(EnumType.STRING)
     private PagoEstado estado;
 
     private String mpPreferenceId;
-
-    private Long mpPaymentId;
+    private Long mpPaymentId; // Asegúrate que coincide con el tipo en BD (bigint)
 
     private LocalDateTime fecha;
-
     private String detalles;
-
 }

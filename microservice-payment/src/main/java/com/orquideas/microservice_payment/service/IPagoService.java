@@ -26,6 +26,7 @@ public interface IPagoService
 
     void procesarWebhookMercadoPago(Map<String, Object> payload);
     Optional<Pago> findByMpPreferenceId(String id);
+    void sincronizarEstadosPagos();
 
 
 }

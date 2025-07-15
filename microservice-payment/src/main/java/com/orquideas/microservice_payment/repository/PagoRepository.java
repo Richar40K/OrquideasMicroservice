@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface PagoRepository extends CrudRepository<Pago,Long>
 {
     Optional<Pago> findByMpPreferenceId(String mpPreferenceId);
+    Optional<Pago> findByMpPaymentId(Long mpPaymentId);
+
 
 }
