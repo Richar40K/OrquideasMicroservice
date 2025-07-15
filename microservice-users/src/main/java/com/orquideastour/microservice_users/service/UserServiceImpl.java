@@ -140,6 +140,12 @@ public class UserServiceImpl implements IUserService
         return (List<User>) userRepository.findByPuesto(Position.CLIENTE);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> ListAllChoferes() {
+        return (List<User>) userRepository.findByPuesto(Position.CHOFER);
+    }
+
     private List<Role> getRoles(User  user) {
         List<Role> roles = new ArrayList<>();
         Optional<Role> roleOptional = roleRepository.findByName("ROLE_USER");

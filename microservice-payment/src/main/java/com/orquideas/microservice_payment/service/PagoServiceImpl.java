@@ -220,6 +220,7 @@ public class PagoServiceImpl implements IPagoService
 
     // 7. Buscar pago por mpPreferenceId
     @Override
+    @Transactional(readOnly = true)
     public Optional<Pago> findByMpPreferenceId(String id) {
         return pagoRepository.findByMpPreferenceId(id);
     }
@@ -255,6 +256,7 @@ public class PagoServiceImpl implements IPagoService
         }
     }
     @Override
+    @Transactional(readOnly = true)
     public void sincronizarEstadosPagos() {
         Iterable<Pago> iterable = pagoRepository.findAll();
         for (Pago pago : iterable) {
