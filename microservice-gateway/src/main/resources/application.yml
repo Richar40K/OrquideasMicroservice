@@ -1,0 +1,77 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9100
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          # CORS global
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowed-origins:
+                  - http://localhost:3000
+                allowed-methods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowed-headers:
+                  - "*"
+                allow-credentials: true
+
+          # Rutas del gateway
+          routes:
+            - id: microservice-users
+              uri: lb://microservice-users
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - StripPrefix=2
+
+            - id: microservice-bus
+              uri: lb://microservice-bus
+              predicates:
+                - Path=/api/bus/**
+              filters:
+                - StripPrefix=2
+
+            - id: microservice-travel
+              uri: lb://microservice-travel
+              predicates:
+                - Path=/api/rutas/**
+              filters:
+                - StripPrefix=1
+
+            - id: microservice-travel
+              uri: lb://microservice-travel
+              predicates:
+                - Path=/api/viajes/**
+              filters:
+                - StripPrefix=2
+
+            - id: microservice-payment
+              uri: lb://microservice-payment
+              predicates:
+                - Path=/api/pagos/**
+              filters:
+                - StripPrefix=2
+
+            - id: microservice-parcels
+              uri: lb://microservice-parcels
+              predicates:
+                - Path=/api/encomiendas/**
+              filters:
+                - StripPrefix=2
+
+            - id: microservice-oauth
+              uri: lb://microservice-oauth
+              predicates:
+                - Path=/api/seguridad/**
+              filters:
+                - StripPrefix=2

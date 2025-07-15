@@ -2,11 +2,34 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="microservice-gateway" />
+        <module name="microservice-payment" />
+        <module name="config-server" />
+        <module name="microservice-travel" />
+        <module name="eureka-server" />
+        <module name="microservice-users" />
+        <module name="microservice-parcels" />
+        <module name="microservice-oauth" />
+        <module name="microservice-bus" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="config-server" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="microservice-bus" options="-parameters" />
+      <module name="microservice-gateway" options="-parameters" />
+      <module name="microservice-oauth" options="-parameters" />
+      <module name="microservice-parcels" options="-parameters" />
+      <module name="microservice-payment" options="-parameters" />
+      <module name="microservice-travel" options="-parameters" />
+      <module name="microservice-users" options="-parameters" />
+    </option>
   </component>
 </project>
