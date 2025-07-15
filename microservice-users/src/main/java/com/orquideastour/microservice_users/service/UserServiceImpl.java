@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService
@@ -140,6 +139,11 @@ public class UserServiceImpl implements IUserService
         return (List<User>) userRepository.findByPuesto(Position.CLIENTE);
     }
 
+    @Override
+    public List<User> ListAllChoferes() {
+        return (List<User>) userRepository.findByPuesto(Position.CHOFER);
+    }
+
     private List<Role> getRoles(User  user) {
         List<Role> roles = new ArrayList<>();
         Optional<Role> roleOptional = roleRepository.findByName("ROLE_USER");
@@ -149,10 +153,5 @@ public class UserServiceImpl implements IUserService
             adminRoleOptional.ifPresent(roles::add);
         }
         return roles;
-    }
-
-    @Override
-    public List<User> findByPuestoChofer() {
-        return (List<User>) userRepository.findByPuesto(Position.CHOFER);
     }
 }
