@@ -39,7 +39,7 @@ public class EncomiendaController {
     }
 
 
-    @GetMapping("/code/{codigo}")
+    @GetMapping(params = "codigo")
     public ResponseEntity<ResponseEncomiendaDTO> getEncomiendaByCodigo(@PathVariable String codigo) {
         return encomeindaService.findByCodigo(codigo)
                 .map(ResponseEntity::ok) // Si existe, devuelve 200 OK con el DTO
