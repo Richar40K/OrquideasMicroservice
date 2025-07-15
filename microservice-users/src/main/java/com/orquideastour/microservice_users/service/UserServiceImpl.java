@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService
@@ -149,7 +148,7 @@ public class UserServiceImpl implements IUserService
     private List<Role> getRoles(User  user) {
         List<Role> roles = new ArrayList<>();
         Optional<Role> roleOptional = roleRepository.findByName("ROLE_USER");
-        roleOptional.ifPresent(roles::add); //otra forma
+        roleOptional.ifPresent(roles::add);
         if(Boolean.TRUE.equals(user.isAdmin())) {
             Optional<Role> adminRoleOptional = roleRepository.findByName("ROLE_ADMIN");
             adminRoleOptional.ifPresent(roles::add);

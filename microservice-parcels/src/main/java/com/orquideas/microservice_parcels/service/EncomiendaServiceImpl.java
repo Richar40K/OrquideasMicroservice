@@ -89,6 +89,8 @@ public class EncomiendaServiceImpl implements IEncomeindaService{
         encomiendaRepository.deleteById(id);
     }
 
+
+    /* No lo entendi :c
     @Override
     @Transactional
     public Optional<Encomienda> update(Encomienda encomienda, Long id) {
@@ -114,12 +116,40 @@ public class EncomiendaServiceImpl implements IEncomeindaService{
     @Override
     public Optional<ResponseEncomiendaDTO> findByCodigo(String codigo) {
         return Optional.empty();
+    }*/
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ResponseEncomiendaDTO> findByCodigo(String codigo) {
+        return encomiendaRepository.findByCodigo(codigo)
+                .map(encomienda -> {
+                    UserDTO userDTO = userClient.getUserById(encomienda.getUserId());
+                    return toResponseDTO(encomienda, userDTO);
+                });
     }
-
     @Override
     public ResponseEncomiendaDTO confirmarPago(Long id) throws Exception {
         return null;
     }
+
+
+    //new :,
+    @Override
+    @Transactional
+    public ResponseEncomiendaDTO actualizarEstado(Long id, State nuevoEstado) throws Exception {
+        Encomienda encomienda = encomiendaRepository.findById(id)
+                .orElseThrow(() -> new Exception("Encomienda no encontrada"));
+        encomienda.setEstado(nuevoEstado);
+        encomiendaRepository.save(encomienda); // Guardar los cambios
+        // Convertir a DTO y devolver
+        return toResponseDTO(encomienda);
+    }
+    private ResponseEncomiendaDTO toResponseDTO(Encomienda encomienda) {
+        ResponseEncomiendaDTO dto = new ResponseEncomiendaDTO();
+        // Mapeo de campos...
+        return dto;
+    }
+
+    //hasta aca jack
     private Double calcularPrecioPorTipo(Paquete tipo) {
         return switch (tipo) {
             case SOBRE_A4 -> 10.0;

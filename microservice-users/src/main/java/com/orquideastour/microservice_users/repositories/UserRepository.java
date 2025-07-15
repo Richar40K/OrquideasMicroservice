@@ -21,5 +21,4 @@ public interface UserRepository extends CrudRepository<User,Long>
     List<User> findByPuesto(Position puesto);
     List<User> findByPuestoNot(Position puesto);
 
-
 }

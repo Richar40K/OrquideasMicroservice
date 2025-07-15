@@ -81,7 +81,11 @@ public class UserController
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+
     @GetMapping("/choferes")
     public  ResponseEntity <List<User>> getAllChoferes () {return ResponseEntity.ok(userService.ListAllChoferes());
     }
+
+
 }
