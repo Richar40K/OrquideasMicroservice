@@ -89,11 +89,21 @@ public class EncomiendaServiceImpl implements IEncomeindaService{
         encomiendaRepository.deleteById(id);
     }
 
+
+    /* No lo entendi :c
     @Override
     public Optional<ResponseEncomiendaDTO> findByCodigo(String codigo) {
         return Optional.empty();
+    }*/
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ResponseEncomiendaDTO> findByCodigo(String codigo) {
+        return encomiendaRepository.findByCodigo(codigo)
+                .map(encomienda -> {
+                    UserDTO userDTO = userClient.getUserById(encomienda.getUserId());
+                    return toResponseDTO(encomienda, userDTO);
+                });
     }
-
     @Override
     public ResponseEncomiendaDTO confirmarPago(Long id) throws Exception {
         return null;
