@@ -2,6 +2,7 @@ package com.orquideas.microservice_parcels.controllers;
 
 import com.orquideas.microservice_parcels.DTO.CreateEncomiendaDTO;
 import com.orquideas.microservice_parcels.DTO.ResponseEncomiendaDTO;
+import com.orquideas.microservice_parcels.enums.State;
 import com.orquideas.microservice_parcels.service.IEncomeindaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class EncomiendaController {
@@ -39,11 +41,22 @@ public class EncomiendaController {
     }
 
 
+    //terrible
     @GetMapping("/code/{codigo}")
     public ResponseEntity<ResponseEncomiendaDTO> getEncomiendaByCodigo(@PathVariable String codigo) {
         return encomeindaService.findByCodigo(codigo)
                 .map(ResponseEntity::ok) // Si existe, devuelve 200 OK con el DTO
                 .orElseGet(() -> ResponseEntity.notFound().build()); // Si no existe, devuelve 404
+    }
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<ResponseEncomiendaDTO> actualizarEstado(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> estadoRequest) throws Exception {
+
+        State nuevoEstado = State.valueOf(estadoRequest.get("estado"));
+        ResponseEncomiendaDTO encomiendaActualizada = encomeindaService.actualizarEstado(id, nuevoEstado);
+
+        return ResponseEntity.ok(encomiendaActualizada);
     }
     // Eliminar encomienda por ID
     @DeleteMapping("/{id}")

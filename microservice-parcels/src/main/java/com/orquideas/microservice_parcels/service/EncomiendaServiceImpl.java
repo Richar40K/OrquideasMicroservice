@@ -108,6 +108,26 @@ public class EncomiendaServiceImpl implements IEncomeindaService{
     public ResponseEncomiendaDTO confirmarPago(Long id) throws Exception {
         return null;
     }
+
+
+    //new :,
+    @Override
+    @Transactional
+    public ResponseEncomiendaDTO actualizarEstado(Long id, State nuevoEstado) throws Exception {
+        Encomienda encomienda = encomiendaRepository.findById(id)
+                .orElseThrow(() -> new Exception("Encomienda no encontrada"));
+        encomienda.setEstado(nuevoEstado);
+        encomiendaRepository.save(encomienda); // Guardar los cambios
+        // Convertir a DTO y devolver
+        return toResponseDTO(encomienda);
+    }
+    private ResponseEncomiendaDTO toResponseDTO(Encomienda encomienda) {
+        ResponseEncomiendaDTO dto = new ResponseEncomiendaDTO();
+        // Mapeo de campos...
+        return dto;
+    }
+
+    //hasta aca jack
     private Double calcularPrecioPorTipo(Paquete tipo) {
         return switch (tipo) {
             case SOBRE_A4 -> 10.0;

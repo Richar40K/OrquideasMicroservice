@@ -63,6 +63,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/encomiendas").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/encomiendas/code/{codigo}").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/encomiendas").permitAll()
+                        .pathMatchers(HttpMethod.PATCH, "/api/encomiendas/{id}/estado").permitAll()
                         .pathMatchers(HttpMethod.DELETE, "/api/encomiendas/{id}").permitAll()
                         .pathMatchers(HttpMethod.GET, "api/users/check-username").permitAll()
                         .anyExchange().authenticated()
