@@ -143,7 +143,7 @@ public class UserServiceImpl implements IUserService
     private List<Role> getRoles(User  user) {
         List<Role> roles = new ArrayList<>();
         Optional<Role> roleOptional = roleRepository.findByName("ROLE_USER");
-        roleOptional.ifPresent(roles::add); //otra forma
+        roleOptional.ifPresent(roles::add);
         if(Boolean.TRUE.equals(user.isAdmin())) {
             Optional<Role> adminRoleOptional = roleRepository.findByName("ROLE_ADMIN");
             adminRoleOptional.ifPresent(roles::add);
@@ -153,6 +153,6 @@ public class UserServiceImpl implements IUserService
 
     @Override
     public List<User> findByPuestoChofer() {
-        return (List<User>) userRepository.findByPuestoChofer(Position.CHOFER,State.ACTIVO);
+        return (List<User>) userRepository.findByPuesto(Position.CHOFER);
     }
 }

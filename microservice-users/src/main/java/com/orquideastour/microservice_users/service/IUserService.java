@@ -21,5 +21,5 @@ public interface IUserService
           Double getTotalSalario();
           List<User> findByPuestoNotClient();
           List<User> finByPuestoClient();
-          List<User> findByPuestoChofer();
+          List<User> ListAllChoferes();
 }

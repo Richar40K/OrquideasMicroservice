@@ -83,7 +83,7 @@ public class UserController
     }
 
     @GetMapping("/choferes")
-    public  ResponseEntity <List<User>> getAllChoferes () {return ResponseEntity.ok(userService.findByPuestoChofer());
+    public  ResponseEntity <List<User>> getAllChoferes () {return ResponseEntity.ok(userService.ListAllChoferes());
     }
 
 }
