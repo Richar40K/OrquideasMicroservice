@@ -12,8 +12,8 @@
         <module name="config-server" />
         <module name="microservice-travel" />
         <module name="eureka-server" />
-        <module name="microservice-users" />
         <module name="microservice-parcels" />
+        <module name="microservice-users" />
         <module name="microservice-oauth" />
         <module name="microservice-bus" />
       </profile>
