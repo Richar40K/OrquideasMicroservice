@@ -18,14 +18,18 @@ import com.orquideas.microservice_payment.entities.Pago;
 import com.orquideas.microservice_payment.enums.PagoEstado;
 import com.orquideas.microservice_payment.enums.PagoTipo;
 import com.orquideas.microservice_payment.repository.PagoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,8 @@ import java.util.Optional;
 @Service
 public class PagoServiceImpl implements IPagoService
 {
+    private static final Logger log = LoggerFactory.getLogger(PagoServiceImpl.class);
+
     @Autowired
     private PagoRepository pagoRepository;
 
@@ -66,27 +72,34 @@ public class PagoServiceImpl implements IPagoService
         pago.setMonto(monto);
         pago.setEstado(PagoEstado.PENDIENTE);
         pago.setFecha(LocalDateTime.now());
-        pago.setDetalles(dto.getDetalles());
+        pago.setDetalles("Boleto para el asiento " + dto.getAsiento());
+
+        // Guardar primero para obtener el ID
+        pago = pagoRepository.save(pago);
 
         // Mercado Pago: Crear preferencia
         MercadoPagoConfig.setAccessToken(mpAccessToken);
 
         PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
-                .title("Boleto de Viaje")
+                .title("Boleto de Viaje - Asiento" + dto.getAsiento())
                 .quantity(1)
                 .unitPrice(BigDecimal.valueOf(monto))
                 .build();
 
         PreferenceRequest request = PreferenceRequest.builder()
                 .items(List.of(itemRequest))
+                .externalReference(pago.getId().toString()) // Usar el ID local como referencia
+                .expires(true)
+                .expirationDateFrom(ZonedDateTime.now().toOffsetDateTime())
+                .expirationDateTo(ZonedDateTime.now().plusMinutes(10).toOffsetDateTime())
+                .externalReference(String.valueOf(pago.getId()))
                 .build();
 
         PreferenceClient client = new PreferenceClient();
         Preference preference = client.create(request);
 
-        pago.setMpPreferenceId(preference.getId());  // Guarda el UUID de la preferencia
-
-        pago = pagoRepository.save(pago);
+        pago.setMpPreferenceId(preference.getId());
+        pagoRepository.save(pago); // Actualizar con el preferenceId
 
         return toDto(pago, preference.getInitPoint());
     }
@@ -155,52 +168,46 @@ public class PagoServiceImpl implements IPagoService
     @Transactional
     public void procesarWebhookMercadoPago(Map<String, Object> payload) {
         try {
+            // Imprime el payload completo para debug
+            System.out.println("Payload recibido de MercadoPago: " + payload);
+
             String type = (String) payload.get("type");
             Map<String, Object> data = (Map<String, Object>) payload.get("data");
 
-            if ("payment".equals(type) && data != null) {
+            // Puedes validar que type sea igual a "payment", o simplemente que data tenga un id
+            if (data != null && data.get("id") != null) {
                 Long paymentId = Long.valueOf(String.valueOf(data.get("id")));
-                String preferenceId = null;
-
-                // Busca preference_id en el payload (depende de cómo MercadoPago lo mande)
-                if (payload.containsKey("preference_id")) {
-                    preferenceId = (String) payload.get("preference_id");
-                } else if (data.containsKey("preference_id")) {
-                    preferenceId = (String) data.get("preference_id");
-                }
-                // Si no viene, lamentablemente no puedes mapear a la preferencia original
-
+                String externalReference = null;
                 String status = null;
 
-                // Puedes obtener el status del Payment si quieres (opcional)
+                // Consulta Mercado Pago para obtener el payment completo
                 try {
                     MercadoPagoConfig.setAccessToken(mpAccessToken);
                     PaymentClient client = new PaymentClient();
                     Payment payment = client.get(paymentId);
                     status = payment.getStatus();
+                    externalReference = payment.getExternalReference();
+                    System.out.println("Webhook recibido: paymentId = " + paymentId + ", externalReference = " + externalReference + ", status = " + status);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
-                if (preferenceId != null) {
-                    Optional<Pago> pagoOpt = pagoRepository.findByMpPreferenceId(preferenceId);
+                if (externalReference != null) {
+                    Optional<Pago> pagoOpt = pagoRepository.findById(Long.valueOf(externalReference));
                     if (pagoOpt.isPresent()) {
                         Pago pago = pagoOpt.get();
-                        pago.setMpPaymentId(paymentId); // Guarda el paymentId numérico
-
-                        PagoEstado nuevoEstado;
-                        switch (status) {
-                            case "approved": nuevoEstado = PagoEstado.APROBADO; break;
-                            case "rejected": nuevoEstado = PagoEstado.RECHAZADO; break;
-                            case "in_process": nuevoEstado = PagoEstado.EN_PROCESO; break;
-                            default: nuevoEstado = PagoEstado.PENDIENTE; break;
-                        }
-                        pago.setEstado(nuevoEstado);
+                        pago.setMpPaymentId(paymentId); // ¡Aquí guardas el paymentId real!
+                        pago.setEstado(calcularEstado(status));
                         pagoRepository.save(pago);
+                        System.out.println("Pago actualizado correctamente: id local = " + externalReference + ", nuevo estado = " + pago.getEstado());
+                    } else {
+                        System.out.println("No se encontró el pago por externalReference: " + externalReference);
                     }
                 } else {
-                    System.out.println("No se encontró el preferenceId en el payload del webhook. No se puede actualizar el Pago.");
+                    System.out.println("No se pudo obtener el externalReference para el paymentId: " + paymentId);
                 }
+            } else {
+                System.out.println("Webhook recibido SIN data válida o sin paymentId");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -208,8 +215,12 @@ public class PagoServiceImpl implements IPagoService
     }
 
 
+
+
+
     // 7. Buscar pago por mpPreferenceId
     @Override
+    @Transactional(readOnly = true)
     public Optional<Pago> findByMpPreferenceId(String id) {
         return pagoRepository.findByMpPreferenceId(id);
     }
@@ -224,11 +235,47 @@ public class PagoServiceImpl implements IPagoService
         dto.setAsiento(pago.getAsiento());
         dto.setMonto(pago.getMonto());
         dto.setEstado(pago.getEstado());
-        // Puedes exponer ambos IDs si gustas, o solo uno
-        dto.setMpPaymentId(pago.getMpPreferenceId());
+
+        // Cambia aquí:
+        dto.setMpPaymentId(pago.getMpPaymentId() != null ? pago.getMpPaymentId().toString() : null);
+        dto.setMpPreferenceId(pago.getMpPreferenceId());
+
         dto.setFecha(pago.getFecha());
         dto.setDetalles(pago.getDetalles());
         dto.setMpInitPoint(mpInitPoint);
         return dto;
     }
+    private PagoEstado calcularEstado(String status) {
+        switch (status) {
+            case "approved": return PagoEstado.APROBADO;
+            case "rejected": return PagoEstado.RECHAZADO;
+            case "in_process": return PagoEstado.EN_PROCESO;
+            case "cancelled":
+            case "expired": return PagoEstado.CANCELADO;
+            default: return PagoEstado.PENDIENTE;
+        }
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public void sincronizarEstadosPagos() {
+        Iterable<Pago> iterable = pagoRepository.findAll();
+        for (Pago pago : iterable) {
+            if (pago.getMpPaymentId() != null) {
+                try {
+                    MercadoPagoConfig.setAccessToken(mpAccessToken);
+                    PaymentClient client = new PaymentClient();
+                    Payment payment = client.get(Long.valueOf(pago.getMpPaymentId()));
+                    String status = payment.getStatus();
+                    pago.setEstado(calcularEstado(status));
+                    pagoRepository.save(pago);
+                    System.out.println("Sincronizado pago id=" + pago.getId() + ", nuevo estado=" + pago.getEstado());
+                } catch (Exception ex) {
+                    System.out.println("No se pudo sincronizar pago id=" + pago.getId() + ": " + ex.getMessage());
+                }
+            }
+        }
+    }
+
+
+
 }

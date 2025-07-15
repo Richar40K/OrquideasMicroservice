@@ -2,8 +2,12 @@ package com.orquideas.microservice_parcels.controllers;
 
 import com.orquideas.microservice_parcels.DTO.CreateEncomiendaDTO;
 import com.orquideas.microservice_parcels.DTO.ResponseEncomiendaDTO;
+
+import com.orquideas.microservice_parcels.entities.Encomienda;
 import com.orquideas.microservice_parcels.enums.State;
 import com.orquideas.microservice_parcels.service.IEncomeindaService;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class EncomiendaController {
@@ -64,5 +69,12 @@ public class EncomiendaController {
         encomeindaService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Encomienda> updateEncomienda(@RequestBody Encomienda encomienda, @PathVariable Long id) {
+        Optional<Encomienda> updatedEncomienda = encomeindaService.update(encomienda, id);
 
+        return updatedEncomienda
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

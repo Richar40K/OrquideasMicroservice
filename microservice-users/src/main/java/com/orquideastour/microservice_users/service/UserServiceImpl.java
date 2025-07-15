@@ -140,6 +140,7 @@ public class UserServiceImpl implements IUserService
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> ListAllChoferes() {
         return (List<User>) userRepository.findByPuesto(Position.CHOFER);
     }

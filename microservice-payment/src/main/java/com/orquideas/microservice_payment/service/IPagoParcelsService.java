@@ -1,8 +1,9 @@
 package com.orquideas.microservice_payment.service;
 
-
+import com.orquideas.microservice_payment.DTO.CrearPagoParcelsDTO;
 import com.orquideas.microservice_payment.DTO.CrearPagoViajeDTO;
 import com.orquideas.microservice_payment.DTO.PagoRespuestaDTO;
+import com.orquideas.microservice_payment.DTO.PagoRespuestaParcelsDTO;
 import com.orquideas.microservice_payment.entities.Pago;
 import com.orquideas.microservice_payment.enums.PagoEstado;
 
@@ -10,23 +11,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface IPagoService
-{
+public interface IPagoParcelsService {
+
     // Iniciar pago de viaje (crea el pago y la preferencia de Mercado Pago)
-    PagoRespuestaDTO iniciarPagoViaje(CrearPagoViajeDTO dto) throws Exception;
+    PagoRespuestaParcelsDTO iniciarPagoEncomienda(CrearPagoParcelsDTO dto) throws Exception;
 
-    Optional<PagoRespuestaDTO> findById(Long id);
+    Optional<PagoRespuestaParcelsDTO> findById(Long id);
 
-    List<PagoRespuestaDTO> findAll();
+    List<PagoRespuestaParcelsDTO> findAll();
 
     // Actualizar estado de pago (por ejemplo, desde un webhook de Mercado Pago)
-    PagoRespuestaDTO actualizarEstado(Long id, PagoEstado nuevoEstado);
+    PagoRespuestaParcelsDTO actualizarEstado(Long id, PagoEstado nuevoEstado);
 
-    Optional<PagoRespuestaDTO> editarPago(Long id, String nuevosDetalles);
+    Optional<PagoRespuestaParcelsDTO> editarPago(Long id, String nuevosDetalles);
 
-    void procesarWebhookMercadoPago(Map<String, Object> payload);
     Optional<Pago> findByMpPreferenceId(String id);
     void sincronizarEstadosPagos();
-
-
 }

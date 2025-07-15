@@ -22,4 +22,5 @@ public interface IUserService
           List<User> findByPuestoNotClient();
           List<User> finByPuestoClient();
           List<User> ListAllChoferes();
+
 }

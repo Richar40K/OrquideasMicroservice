@@ -92,6 +92,28 @@ public class EncomiendaServiceImpl implements IEncomeindaService{
 
     /* No lo entendi :c
     @Override
+    @Transactional
+    public Optional<Encomienda> update(Encomienda encomienda, Long id) {
+        Optional<Encomienda> existingEncomienda = encomiendaRepository.findById(id);
+
+        if (existingEncomienda.isPresent()) {
+            Encomienda actual = existingEncomienda.get();
+
+            // Actualiza los campos necesarios
+            actual.setEstado(encomienda.getEstado());
+            // ... otros campos relevantes
+
+            // Guarda y devuelve la encomienda actualizada
+            Encomienda updated = encomiendaRepository.save(actual);
+            return Optional.of(updated);
+        } else {
+            // No se encontró la encomienda con el ID proporcionado
+            return Optional.empty();
+        }
+    }
+
+
+    @Override
     public Optional<ResponseEncomiendaDTO> findByCodigo(String codigo) {
         return Optional.empty();
     }*/
