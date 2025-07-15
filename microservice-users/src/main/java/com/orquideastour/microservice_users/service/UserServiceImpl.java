@@ -150,4 +150,9 @@ public class UserServiceImpl implements IUserService
         }
         return roles;
     }
+
+    @Override
+    public List<User> findByPuestoChofer() {
+        return (List<User>) userRepository.findByPuestoChofer(Position.CHOFER,State.ACTIVO);
+    }
 }
