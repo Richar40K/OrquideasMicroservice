@@ -97,27 +97,6 @@ public class UserServiceImpl implements IUserService
                 });
     }
 
-
-
-    //test
-    @Override
-    public Optional<User> patchupdate(User user, Long id) {
-        return userRepository.findById(id)
-                .map(usDb -> {
-                    usDb.setName(user.getName());
-                    usDb.setSecondName(user.getSecondName());
-                    usDb.setLastName(user.getLastName());
-                    usDb.setEmail(user.getEmail());
-                    usDb.setCellPhone(user.getCellPhone());
-                    if (StringUtils.isNotBlank(user.getPassword())) {
-                        usDb.setPassword(passwordEncoder.encode(user.getPassword()));
-                    }
-                    usDb.setEstado(user.getEstado());
-
-                    return userRepository.save(usDb);
-                });
-    }
-    //test
     @Override
     @Transactional
     public void deleteById(Long id) {
