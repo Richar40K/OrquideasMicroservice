@@ -76,6 +76,15 @@ public class UserController
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
+    //test
+    @PostMapping
+    public ResponseEntity<User> patchupdate(@RequestBody User user,@PathVariable Long id){
+        return  userService.patchupdate(user,id).
+                map( userUpdate -> ResponseEntity.status(HttpStatus.CREATED).body(userUpdate))
+                .orElseGet(()->ResponseEntity.noContent().build());
+    }
+    //test
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         userService.deleteById(id);
