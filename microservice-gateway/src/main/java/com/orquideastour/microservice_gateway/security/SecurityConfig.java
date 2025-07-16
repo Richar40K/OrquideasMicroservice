@@ -57,6 +57,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST, "/api/bus").permitAll()
                         .pathMatchers(HttpMethod.DELETE, "/api/bus/{id}").permitAll()
                         .pathMatchers(HttpMethod.PUT, "/api/bus/{id}").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/bus/cantidad-activos").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/rutas").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/viajes").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/viajes/{id}").permitAll()
@@ -65,6 +66,8 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/viajes/programados").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/viajes/{id}/asientos").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/viajes").permitAll()
+                        .pathMatchers(HttpMethod.PUT, "/api/viajes/{viajeId}/asientos/{numero}/ocupar").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/viajes/rutas-populares").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/pagos/viaje").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/pagos/viaje").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/pagos/viajes/{id}").permitAll()
@@ -76,6 +79,9 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/pagos/totales/encomiendas").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/pagos/totales/viajes").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/pagos/total-pendientes").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/pagos/total-aprobados-hoy").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/pagos/viajes-aprobados").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/pagos/encomiendas-aprobadas").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/encomiendas").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/encomiendas/code/{codigo}").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/encomiendas").permitAll()
@@ -86,7 +92,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/pagos/sincronizar").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/encomienda").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/seguridad/login").permitAll()
-                        .anyExchange().authenticated()
+                        .anyExchange().authenticated() ///rutas-populares
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt

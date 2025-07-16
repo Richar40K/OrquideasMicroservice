@@ -54,4 +54,9 @@ public class BusServiceImpl implements IBusService{
     public List<Bus> findByState() {
         return (List<Bus>) busRepository.findByEstado(State.ACTIVO);
     }
+
+    @Override
+    public Long getBusesActivos() {
+        return busRepository.countByEstado(State.ACTIVO);
+    }
 }

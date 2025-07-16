@@ -10,5 +10,5 @@ spring:
       server:
         git:
           uri: https://github.com/Richar40K/OrquideasMicroservice.git
-          default-label: master
+          default-label: prueba
           search-paths: config

@@ -204,6 +204,12 @@ public class PagoParcelsServiceImpl  implements IPagoParcelsService
         return pagoRepository.calcularTotalPagosEncomiendas();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Long contarEncomiendasAprobadas() {
+        return pagoRepository.contarEncomiendasAprobadas();
+    }
+
     private PagoRespuestaParcelsDTO toDto(Pago pago, String mpInitPoint) {
         PagoRespuestaParcelsDTO dto = new PagoRespuestaParcelsDTO();
         dto.setId(pago.getId());

@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -198,9 +199,18 @@ public class PagoServiceImpl implements IPagoService
                         pago.setEstado(calcularEstado(status));
                         pagoRepository.save(pago);
                         System.out.println("Pago actualizado correctamente: id local = " + externalReference + ", nuevo estado = " + pago.getEstado());
+                        // AQUÍ VA LA LLAMADA PARA OCUPAR EL ASIENTO:
+                        if (pago.getEstado() == PagoEstado.APROBADO) {
+                            try {
+                                viajesClient.ocuparAsiento(pago.getViajeId(), pago.getAsiento());
+                            } catch (Exception e) {
+                                log.error("No se pudo ocupar el asiento en travel: {}", e.getMessage());
+                            }
+                        }
                     } else {
                         System.out.println("No se encontró el pago por externalReference: " + externalReference);
                     }
+
                 } else {
                     System.out.println("No se pudo obtener el externalReference para el paymentId: " + paymentId);
                 }
@@ -317,6 +327,21 @@ public class PagoServiceImpl implements IPagoService
     @Transactional(readOnly = true)
     public Double obtenerTotalPagosPendientes() {
         return pagoRepository.calcularTotalPagosPendientes();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Double calcularTotalPagosAprobadosHoy() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay();
+        LocalDateTime end = today.plusDays(1).atStartOfDay().minusNanos(1);
+        return pagoRepository.calcularTotalPagosAprobadosEnRango(start, end);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long contarViajesAprobados() {
+        return pagoRepository.contarViajesAprobados();
     }
 
 

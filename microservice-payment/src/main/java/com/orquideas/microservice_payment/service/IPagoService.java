@@ -33,4 +33,6 @@ public interface IPagoService
     Double obtenerTotalDePagosAprobados();
     Double obtenerTotalPagosViajes();
     Double obtenerTotalPagosPendientes();
+    Double calcularTotalPagosAprobadosHoy();
+    Long contarViajesAprobados();
 }
