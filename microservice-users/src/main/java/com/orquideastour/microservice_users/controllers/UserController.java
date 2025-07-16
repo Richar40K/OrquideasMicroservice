@@ -77,7 +77,7 @@ public class UserController
     }
 
     //test
-    @PatchMapping("/saveadmin")
+    @PatchMapping("/saveadmin/{id}")
     public ResponseEntity<User> patchupdate(@RequestBody User user,@PathVariable Long id){
         return  userService.patchupdate(user,id).
                 map( userUpdate -> ResponseEntity.status(HttpStatus.CREATED).body(userUpdate))

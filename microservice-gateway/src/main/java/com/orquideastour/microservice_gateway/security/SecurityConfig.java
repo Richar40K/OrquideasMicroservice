@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.PUT, "/api/users/{id}").permitAll()
                         .pathMatchers(HttpMethod.DELETE, "/api/users/{id}").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/users/count").permitAll()
+                        .pathMatchers(HttpMethod.PATCH, "/api/users/saveadmin/{id}").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/users/count/active").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/users/salary/total").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/users/empleados").permitAll()
