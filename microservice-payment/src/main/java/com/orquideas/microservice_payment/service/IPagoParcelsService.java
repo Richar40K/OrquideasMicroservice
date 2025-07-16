@@ -26,4 +26,5 @@ public interface IPagoParcelsService {
     void sincronizarEstadosPagos();
     List<PagoEncomiendaDTO> getPagosEncomiendasAprobadasPorUsuario(Long userId);
     Double obtenerTotalPagosEncomiendas();
+    Long contarEncomiendasAprobadas();
 }

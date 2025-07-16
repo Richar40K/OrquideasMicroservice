@@ -9,4 +9,5 @@ import java.util.List;
 public interface BusRepository extends CrudRepository<Bus,Long>
 {
     List<Bus> findByEstado(State estado);
+    Long countByEstado(State estado);
 }

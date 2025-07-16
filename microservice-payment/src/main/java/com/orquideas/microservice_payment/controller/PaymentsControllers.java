@@ -83,6 +83,14 @@ public class PaymentsControllers {
         Double total = pagoService.obtenerTotalPagosPendientes();
         return ResponseEntity.ok(total);
     }
+    @GetMapping("/total-aprobados-hoy")
+    public Double getTotalPagosAprobadosHoy() {
+        return pagoService.calcularTotalPagosAprobadosHoy();
+    }
+    @GetMapping("/viajes-aprobados")
+    public Long getCantidadViajesAprobados() {
+        return pagoService.contarViajesAprobados();
+    }
     //CONTROLLERS DE ENCOMIENDAS
     @PostMapping("/encomienda")
     public ResponseEntity<PagoRespuestaParcelsDTO> iniciarPagoViaje(@RequestBody CrearPagoParcelsDTO dto) throws Exception {
@@ -114,6 +122,10 @@ public class PaymentsControllers {
     public ResponseEntity<Double> obtenerTotalPagosEncomiendas() {
         Double total = pagoParcelsService.obtenerTotalPagosEncomiendas();
         return ResponseEntity.ok(total != null ? total : 0.0);
+    }
+    @GetMapping("/encomiendas-aprobadas")
+    public Long getCantidadEncomiendasAprobadas() {
+        return pagoParcelsService.contarEncomiendasAprobadas();
     }
 
 }

@@ -13,4 +13,5 @@ public interface IBusService
     Optional<Bus> update(Bus bus, Long id);
     void deleteById(Long id);
     List<Bus> findByState();
+    Long getBusesActivos();
 }

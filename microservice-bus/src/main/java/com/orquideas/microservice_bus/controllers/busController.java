@@ -46,4 +46,8 @@ public class busController
         busService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/cantidad-activos")
+    public Long getBusesActivos() {
+        return busService.getBusesActivos();
+    }
 }
