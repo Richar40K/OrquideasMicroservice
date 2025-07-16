@@ -60,12 +60,14 @@ public class PaymentsControllers {
         return editado.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PostMapping
     public ResponseEntity<String> recibirWebhook(@RequestBody Map<String, Object> payload) {
         System.out.println("Payload recibido de MercadoPago: " + payload);
         pagoService.procesarWebhookMercadoPago(payload);
         return ResponseEntity.ok("OK");
     }
+
     @GetMapping("/sincronizar")
     public ResponseEntity<String> sincronizarPagos() {
         pagoService.sincronizarEstadosPagos();
