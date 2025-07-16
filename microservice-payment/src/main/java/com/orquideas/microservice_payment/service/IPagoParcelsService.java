@@ -1,9 +1,6 @@
 package com.orquideas.microservice_payment.service;
 
-import com.orquideas.microservice_payment.DTO.CrearPagoParcelsDTO;
-import com.orquideas.microservice_payment.DTO.CrearPagoViajeDTO;
-import com.orquideas.microservice_payment.DTO.PagoRespuestaDTO;
-import com.orquideas.microservice_payment.DTO.PagoRespuestaParcelsDTO;
+import com.orquideas.microservice_payment.DTO.*;
 import com.orquideas.microservice_payment.entities.Pago;
 import com.orquideas.microservice_payment.enums.PagoEstado;
 
@@ -27,4 +24,6 @@ public interface IPagoParcelsService {
 
     Optional<Pago> findByMpPreferenceId(String id);
     void sincronizarEstadosPagos();
+    List<PagoEncomiendaDTO> getPagosEncomiendasAprobadasPorUsuario(Long userId);
+    Double obtenerTotalPagosEncomiendas();
 }

@@ -8,10 +8,7 @@ import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
-import com.orquideas.microservice_payment.DTO.CrearPagoViajeDTO;
-import com.orquideas.microservice_payment.DTO.PagoRespuestaDTO;
-import com.orquideas.microservice_payment.DTO.UserDTO;
-import com.orquideas.microservice_payment.DTO.ViajesDTO;
+import com.orquideas.microservice_payment.DTO.*;
 import com.orquideas.microservice_payment.client.UserClient;
 import com.orquideas.microservice_payment.client.ViajesClient;
 import com.orquideas.microservice_payment.entities.Pago;
@@ -34,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PagoServiceImpl implements IPagoService
@@ -276,6 +274,50 @@ public class PagoServiceImpl implements IPagoService
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<PagoViajeDTO> getPagosViajesAprobadosPorUsuario(Long userId) {
+        List<Pago> pagos = pagoRepository.findByUserIdAndTipoAndEstado(userId, PagoTipo.VIAJE, PagoEstado.APROBADO);
+
+        return pagos.stream().map(pago -> {
+            PagoViajeDTO dto = new PagoViajeDTO();
+            dto.setPagoId(pago.getId());
+            dto.setMonto(pago.getMonto());
+            dto.setEstado(pago.getEstado().toString());
+            dto.setDetalles(pago.getDetalles());
+            dto.setFecha(pago.getFecha());
+            dto.setUserId(pago.getUserId());
+
+            // User
+            UserDTO user = userClient.getUserById(pago.getUserId());
+            dto.setName(user.getName() + " " + user.getLastName());
+            dto.setEmail(user.getEmail());
+
+            // Viaje
+            ViajesDTO viaje = viajesClient.getViajesById(pago.getViajeId());
+            dto.setViaje(viaje);
+            dto.setAsiento(pago.getAsiento());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Double obtenerTotalDePagosAprobados() {
+        return pagoRepository.calcularTotalPagosAprobados();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Double obtenerTotalPagosViajes() {
+        return pagoRepository.calcularTotalPagosViajes();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Double obtenerTotalPagosPendientes() {
+        return pagoRepository.calcularTotalPagosPendientes();
+    }
 
 
 }

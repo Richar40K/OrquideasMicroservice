@@ -2,7 +2,9 @@ package com.orquideas.microservice_payment.service;
 
 
 import com.orquideas.microservice_payment.DTO.CrearPagoViajeDTO;
+import com.orquideas.microservice_payment.DTO.PagoEncomiendaDTO;
 import com.orquideas.microservice_payment.DTO.PagoRespuestaDTO;
+import com.orquideas.microservice_payment.DTO.PagoViajeDTO;
 import com.orquideas.microservice_payment.entities.Pago;
 import com.orquideas.microservice_payment.enums.PagoEstado;
 
@@ -27,6 +29,8 @@ public interface IPagoService
     void procesarWebhookMercadoPago(Map<String, Object> payload);
     Optional<Pago> findByMpPreferenceId(String id);
     void sincronizarEstadosPagos();
-
-
+    List<PagoViajeDTO> getPagosViajesAprobadosPorUsuario(Long userId);
+    Double obtenerTotalDePagosAprobados();
+    Double obtenerTotalPagosViajes();
+    Double obtenerTotalPagosPendientes();
 }

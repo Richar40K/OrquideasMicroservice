@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PagoParcelsServiceImpl  implements IPagoParcelsService
@@ -172,6 +173,37 @@ public class PagoParcelsServiceImpl  implements IPagoParcelsService
             }
         }
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PagoEncomiendaDTO> getPagosEncomiendasAprobadasPorUsuario(Long userId) {
+        List<Pago> pagos=pagoRepository.findByUserIdAndTipoAndEstado(userId,PagoTipo.ENCOMIENDA,PagoEstado.APROBADO);
+        return pagos.stream().map( pago -> {
+            PagoEncomiendaDTO dto = new PagoEncomiendaDTO();
+            dto.setPagoId(pago.getId());
+            dto.setMonto(pago.getMonto());
+            dto.setEstado(pago.getEstado().toString());
+            dto.setDetalles(pago.getDetalles());
+            dto.setFecha(pago.getFecha());
+            dto.setUserId(pago.getUserId());
+
+            UserDTO user = userClient.getUserById(pago.getUserId());
+            dto.setName(user.getName() + " " + user.getLastName());
+            dto.setEmail(user.getEmail());
+
+            ParcelsDTO encomienda = parcelsClient.obtenerPorId(pago.getEncomiendaId());
+            dto.setParcels(encomienda);
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Double obtenerTotalPagosEncomiendas() {
+        return pagoRepository.calcularTotalPagosEncomiendas();
+    }
+
     private PagoRespuestaParcelsDTO toDto(Pago pago, String mpInitPoint) {
         PagoRespuestaParcelsDTO dto = new PagoRespuestaParcelsDTO();
         dto.setId(pago.getId());

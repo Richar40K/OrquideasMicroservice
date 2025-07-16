@@ -10,4 +10,5 @@ public class CrearPagoParcelsDTO
     private Long userId;
     private Long parcelsId;
     private String detalles;
+
 }

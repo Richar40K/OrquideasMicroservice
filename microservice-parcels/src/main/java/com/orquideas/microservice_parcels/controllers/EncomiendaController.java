@@ -6,8 +6,6 @@ import com.orquideas.microservice_parcels.DTO.ResponseEncomiendaDTO;
 import com.orquideas.microservice_parcels.entities.Encomienda;
 import com.orquideas.microservice_parcels.enums.State;
 import com.orquideas.microservice_parcels.service.IEncomeindaService;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

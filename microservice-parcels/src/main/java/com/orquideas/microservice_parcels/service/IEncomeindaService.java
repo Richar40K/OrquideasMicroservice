@@ -22,7 +22,6 @@ public interface IEncomeindaService
     void deleteById(Long id);
 
     Optional<Encomienda> update(Encomienda encomienda, Long id);
-
     Optional<ResponseEncomiendaDTO> findByCodigo(String codigo);
 
     ResponseEncomiendaDTO confirmarPago(Long id) throws Exception;

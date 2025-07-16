@@ -1,9 +1,6 @@
 package com.orquideas.microservice_payment.controller;
 
-import com.orquideas.microservice_payment.DTO.CrearPagoParcelsDTO;
-import com.orquideas.microservice_payment.DTO.CrearPagoViajeDTO;
-import com.orquideas.microservice_payment.DTO.PagoRespuestaDTO;
-import com.orquideas.microservice_payment.DTO.PagoRespuestaParcelsDTO;
+import com.orquideas.microservice_payment.DTO.*;
 import com.orquideas.microservice_payment.enums.PagoEstado;
 import com.orquideas.microservice_payment.service.IPagoParcelsService;
 import com.orquideas.microservice_payment.service.IPagoService;
@@ -71,6 +68,21 @@ public class PaymentsControllers {
         pagoService.sincronizarEstadosPagos();
         return ResponseEntity.ok("Pagos sincronizados");
     }
+    @GetMapping("/viaje/aprobados/{userId}")
+    public ResponseEntity<List<PagoViajeDTO>> getPagosViajesAprobados(@PathVariable Long userId) {
+        List<PagoViajeDTO> pagos = pagoService.getPagosViajesAprobadosPorUsuario(userId);
+        return ResponseEntity.ok(pagos);
+    }
+    @GetMapping("/totales/viajes")
+    public ResponseEntity<Double> obtenerTotalPagosViajes() {
+        Double total = pagoService.obtenerTotalPagosViajes();
+        return ResponseEntity.ok(total != null ? total : 0.0);
+    }
+    @GetMapping("/total-pendientes")
+    public ResponseEntity<Double> obtenerTotalPendientes() {
+        Double total = pagoService.obtenerTotalPagosPendientes();
+        return ResponseEntity.ok(total);
+    }
     //CONTROLLERS DE ENCOMIENDAS
     @PostMapping("/encomienda")
     public ResponseEntity<PagoRespuestaParcelsDTO> iniciarPagoViaje(@RequestBody CrearPagoParcelsDTO dto) throws Exception {
@@ -87,6 +99,21 @@ public class PaymentsControllers {
         return pago.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/encomienda/aprobadas/{userId}")
+    public ResponseEntity<List<PagoEncomiendaDTO>> getPagosEncomiendasAprobadas(@PathVariable Long userId) {
+        List<PagoEncomiendaDTO> pagos = pagoParcelsService.getPagosEncomiendasAprobadasPorUsuario(userId);
+        return ResponseEntity.ok(pagos);
+    }
 
+    @GetMapping("/total-aprobados")
+    public ResponseEntity<Double> obtenerTotalAprobados() {
+        Double total = pagoService.obtenerTotalDePagosAprobados();
+        return ResponseEntity.ok(total);
+    }
+    @GetMapping("/totales/encomiendas")
+    public ResponseEntity<Double> obtenerTotalPagosEncomiendas() {
+        Double total = pagoParcelsService.obtenerTotalPagosEncomiendas();
+        return ResponseEntity.ok(total != null ? total : 0.0);
+    }
 
 }
