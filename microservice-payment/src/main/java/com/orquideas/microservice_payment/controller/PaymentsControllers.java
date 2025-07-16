@@ -71,6 +71,8 @@ public class PaymentsControllers {
         pagoService.sincronizarEstadosPagos();
         return ResponseEntity.ok("Pagos sincronizados");
     }
+
+
     //CONTROLLERS DE ENCOMIENDAS
     @PostMapping("/encomienda")
     public ResponseEntity<PagoRespuestaParcelsDTO> iniciarPagoViaje(@RequestBody CrearPagoParcelsDTO dto) throws Exception {
