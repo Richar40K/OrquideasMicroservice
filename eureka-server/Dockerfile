@@ -6,7 +6,6 @@ COPY . .
 
 RUN chmod +x mvnw
 
-# Compila SOLO el módulo eureka-server (y sus dependencias)
 RUN ./mvnw clean package -DskipTests -pl eureka-server -am
 
 WORKDIR /app/eureka-server
