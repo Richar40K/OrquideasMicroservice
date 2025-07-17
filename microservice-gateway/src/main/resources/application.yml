@@ -14,7 +14,7 @@ spring:
             cors-configurations:
               '[/**]':
                 allowed-origins:
-                  - http://localhost:3000
+                  - https://orquideas-frontend-44rifki5j-ricardos-projects-59aad0ef.vercel.app/
                 allowed-methods:
                   - GET
                   - POST
