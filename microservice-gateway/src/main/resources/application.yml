@@ -29,49 +29,49 @@ spring:
           # Rutas del gateway
           routes:
             - id: microservice-users
-              uri: lb://microservice-users
+              uri: https://microservice-users-hzyz.onrender.com
               predicates:
                 - Path=/api/users/**
               filters:
                 - StripPrefix=2
 
             - id: microservice-bus
-              uri: lb://microservice-bus
+              uri: https://microservice-bus.onrender.com
               predicates:
                 - Path=/api/bus/**
               filters:
                 - StripPrefix=2
 
             - id: microservice-travel
-              uri: lb://microservice-travel
+              uri: https://microservice-travel.onrender.com
               predicates:
                 - Path=/api/rutas/**
               filters:
                 - StripPrefix=1
 
             - id: microservice-travel
-              uri: lb://microservice-travel
+              uri: https://microservice-travel.onrender.com
               predicates:
                 - Path=/api/viajes/**
               filters:
                 - StripPrefix=2
 
             - id: microservice-payment
-              uri: lb://microservice-payment
+              uri: https://microservice-pagos.onrender.com
               predicates:
                 - Path=/api/pagos/**
               filters:
                 - StripPrefix=2
 
             - id: microservice-parcels
-              uri: lb://microservice-parcels
+              uri: https://microservice-encomiendas.onrender.com
               predicates:
                 - Path=/api/encomiendas/**
               filters:
                 - StripPrefix=2
 
             - id: microservice-oauth
-              uri: lb://microservice-oauth
+              uri: https://microservice-oauth-84gq.onrender.com
               predicates:
                 - Path=/api/seguridad/**
               filters:
