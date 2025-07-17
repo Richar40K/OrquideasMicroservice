@@ -1,13 +1,17 @@
-FROM eclipse-temurin:24-jre
-
+ARG MODULE=eureka-server
+FROM eclipse-temurin:21-jdk as builder
 WORKDIR /app
+ARG MODULE=microservice-eureka
+COPY ${MODULE} /app/${MODULE}
+COPY pom.xml .
+#RUN ./mvnw clean package -DskipTests
+RUN chmod +x /app/${MODULE}/mvnw && /app/${MODULE}/mvnw -f /app/${MODULE}/pom.xml clean package -DskipTests
 
-COPY . .
+FROM eclipse-temurin:21-jre
+ARG MODULE=microservice-eureka
+WORKDIR /app
+COPY --from=builder /app/${MODULE}/target/*.jar app.jar
+#COPY ${MODULE}/target/*.jar app.jar
 
-RUN chmod +x mvnw
-
-RUN ./mvnw clean package -DskipTests -pl eureka-server -am
-
-WORKDIR /app/eureka-server
-
-CMD ["java", "-jar", "target/eureka-server-0.0.1-SNAPSHOT.jar"]
+EXPOSE 8761
+ENTRYPOINT ["java","-jar","/app/app.jar"]
