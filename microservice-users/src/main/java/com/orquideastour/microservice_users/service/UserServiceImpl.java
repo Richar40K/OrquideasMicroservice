@@ -50,7 +50,7 @@ public class UserServiceImpl implements IUserService
     @Override
     @Transactional
     public User save(User user) {
-        if(user.getUsername() == null || user.getUsername().isBlank()) {
+        if(user.getUsername()== null || user.getUsername().isBlank()) {
             String dni = user.getDni();
             user.setUsername(dni);
             user.setPassword(passwordEncoder.encode(dni));

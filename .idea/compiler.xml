@@ -13,9 +13,17 @@
         <module name="microservice-travel" />
         <module name="eureka-server" />
         <module name="microservice-parcels" />
-        <module name="microservice-users" />
         <module name="microservice-oauth" />
         <module name="microservice-bus" />
+      </profile>
+      <profile name="Annotation profile for OrquideasMicroservice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="microservice-users" />
       </profile>
     </annotationProcessing>
   </component>
@@ -29,7 +37,7 @@
       <module name="microservice-parcels" options="-parameters" />
       <module name="microservice-payment" options="-parameters" />
       <module name="microservice-travel" options="-parameters" />
-      <module name="microservice-users" options="-parameters" />
+      <module name="microservice-users" options="-parameters -parameters" />
     </option>
   </component>
 </project>
