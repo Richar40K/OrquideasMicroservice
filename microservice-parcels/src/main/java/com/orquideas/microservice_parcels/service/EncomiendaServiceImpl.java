@@ -90,7 +90,6 @@ public class EncomiendaServiceImpl implements IEncomeindaService{
     }
 
 
-    /* No lo entendi :c
     @Override
     @Transactional
     public Optional<Encomienda> update(Encomienda encomienda, Long id) {
@@ -113,10 +112,7 @@ public class EncomiendaServiceImpl implements IEncomeindaService{
     }
 
 
-    @Override
-    public Optional<ResponseEncomiendaDTO> findByCodigo(String codigo) {
-        return Optional.empty();
-    }*/
+
     @Override
     @Transactional(readOnly = true)
     public Optional<ResponseEncomiendaDTO> findByCodigo(String codigo) {
