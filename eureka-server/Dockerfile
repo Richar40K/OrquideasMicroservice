@@ -1,17 +1,17 @@
-ARG MODULE=eureka-server
+# Dockerfile del microservicio eureka-server de forma independiente
+# (Si SOLO subes la carpeta eureka-server a Render)
+
 FROM eclipse-temurin:24-jdk as builder
 WORKDIR /app
-ARG MODULE=eureka-server
-COPY ${MODULE} /app/${MODULE}
-COPY pom.xml .
-#RUN ./mvnw clean package -DskipTests
-RUN chmod +x /app/${MODULE}/mvnw && /app/${MODULE}/mvnw -f /app/${MODULE}/pom.xml clean package -DskipTests
+
+# Copia solo lo necesario si estás dentro de la carpeta eureka-server directamente
+COPY . .
+
+RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:24-jre
-ARG MODULE=eureka-server
 WORKDIR /app
-COPY --from=builder /app/${MODULE}/target/*.jar app.jar
-#COPY ${MODULE}/target/*.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8761
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
