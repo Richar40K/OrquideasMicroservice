@@ -4,6 +4,7 @@ WORKDIR /app
 ARG MODULE=microservice-payment
 COPY ${MODULE} /app/${MODULE}
 COPY pom.xml .
+#RUN ./mvnw clean package -DskipTests
 RUN chmod +x /app/${MODULE}/mvnw && /app/${MODULE}/mvnw -f /app/${MODULE}/pom.xml clean package -DskipTests
 
 FROM eclipse-temurin:24-jre
@@ -12,4 +13,5 @@ WORKDIR /app
 COPY --from=builder /app/${MODULE}/target/*.jar app.jar
 #COPY ${MODULE}/target/*.jar app.jar
 
+EXPOSE 8888
 ENTRYPOINT ["java","-jar","/app/app.jar"]
