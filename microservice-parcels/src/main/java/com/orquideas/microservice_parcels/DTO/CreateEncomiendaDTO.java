@@ -1,9 +1,5 @@
 package com.orquideas.microservice_parcels.DTO;
 
-import lombok.Getter;
-
-@Getter
-
 public class CreateEncomiendaDTO
 {
     private Long userId;
@@ -14,4 +10,32 @@ public class CreateEncomiendaDTO
     private String nombreDestino;
     private String apellidoDestino;
 
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getOrigen() {
+        return origen;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public String getDniDestino() {
+        return dniDestino;
+    }
+
+    public String getNombreDestino() {
+        return nombreDestino;
+    }
+
+    public String getApellidoDestino() {
+        return apellidoDestino;
+    }
 }

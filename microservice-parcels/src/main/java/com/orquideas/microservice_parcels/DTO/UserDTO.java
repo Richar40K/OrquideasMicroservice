@@ -1,9 +1,6 @@
 package com.orquideas.microservice_parcels.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
-@Getter
-@Setter
+
 public class UserDTO
 {
     private Long id;
@@ -11,4 +8,45 @@ public class UserDTO
     private String lastName;
     private String email;
     private String cellPhone;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
 }
