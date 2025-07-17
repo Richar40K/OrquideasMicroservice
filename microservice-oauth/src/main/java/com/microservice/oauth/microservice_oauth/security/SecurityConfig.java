@@ -77,7 +77,7 @@ public class SecurityConfig {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:3000/api/oauth2/callback")
+                .redirectUri("https://orquideas-frontend-44rifki5j-ricardos-projects-59aad0ef.vercel.app/api/oauth2/callback")
                 .postLogoutRedirectUri("http://127.0.0.1:8090/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
