@@ -51,7 +51,6 @@ public class SecurityConfig {
                                 "/login",
                                 "/actuator/**"
                         ).permitAll()
-                        .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwtSpec -> jwtSpec.jwtDecoder(jwtDecoder))
