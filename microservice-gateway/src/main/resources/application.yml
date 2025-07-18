@@ -71,7 +71,7 @@ spring:
                 - StripPrefix=2
 
             - id: microservice-oauth
-              uri: https://microservice-oauth-84gq.onrender.com
+              uri: https://microservice-oauth-7glp.onrender.com/
               predicates:
                 - Path=/api/seguridad/**
               filters:
