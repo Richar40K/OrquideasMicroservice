@@ -11,5 +11,5 @@ ARG MODULE=microservice-oauth
 WORKDIR /app
 COPY --from=builder /app/${MODULE}/target/*.jar app.jar
 #COPY ${MODULE}/target/*.jar app.jar
-EXPOSE 9100
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app/app.jar"]
