@@ -115,7 +115,7 @@ public class SecurityConfig {
     public ReactiveJwtDecoder reactiveJwtDecoder() {
         // Para desarrollo, puedes probar con IP en lugar de localhost
         return NimbusReactiveJwtDecoder
-                .withJwkSetUri("https://microservice-oauth-84gq.onrender.com/.well-known/jwks.json")
+                .withJwkSetUri("https://microservice-oauth-vn7p.onrender.com/.well-known/jwks.json")
                 .build();
     }
 
