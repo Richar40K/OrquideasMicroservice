@@ -3,7 +3,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://microservice-oauth-84gq.onrender.com
+          issuer-uri: https://microservice-oauth-7glp.onrender.com/
 
   cloud:
     gateway:
@@ -14,7 +14,7 @@ spring:
             cors-configurations:
               '[/**]':
                 allowed-origins:
-                  - https://orquideas-frontend-kou4.vercel.app/
+                  - https://orquideas-frontend.vercel.app/
                 allowed-methods:
                   - GET
                   - POST
