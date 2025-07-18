@@ -14,7 +14,7 @@ public class AppConfig {
     @LoadBalanced
     public WebClient.Builder loadBalancedWebClientBuilder() {
         return WebClient.builder()
-                .baseUrl("http://microservice-users") // Nombre del servicio registrado en Eureka
+                .baseUrl("https://microservice-users-hzyz.onrender.com") // Nombre del servicio registrado en Eureka
                 .defaultHeader("Accept", "application/json")
                 .defaultHeader("Content-Type", "application/json");
     }
@@ -27,7 +27,7 @@ public class AppConfig {
     @Bean
     public WebClient usersWebClient(WebClient.Builder loadBalancedWebClientBuilder) {
         return loadBalancedWebClientBuilder
-                .baseUrl("http://microservice-users")
+                .baseUrl("https://microservice-users-hzyz.onrender.com")
                 .build();
     }
 }
