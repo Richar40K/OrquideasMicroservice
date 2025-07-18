@@ -14,5 +14,5 @@ eureka:
     metadata-map:
       zone: primary
   client:
-    register-with-eureka: true
+    register-with-eureka: false
     fetch-registry: true
