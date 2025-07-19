@@ -1,4 +1,4 @@
-ARG MODULE=microservice-users
+   ARG MODULE=microservice-users
 FROM eclipse-temurin:24-jdk as builder
 WORKDIR /app
 ARG MODULE=microservice-users
